@@ -497,7 +497,7 @@ async function generateAssemblyTranscript(){
     const submit=await fetch("https://api.assemblyai.com/v2/transcript",{
       method:"POST",
       headers:{"Authorization":window.ASSEMBLYAI_CONFIG.API_KEY,"Content-Type":"application/json"},
-      body:JSON.stringify({audio_url:audioUrl,punctuate:true,format_text:true})
+      body:JSON.stringify({audio_url:audioUrl,punctuate:true,format_text:true,speech_model:"universal"})
     });
     const job=await submit.json();
     if(!job.id) throw new Error(job.error||"Submission failed");

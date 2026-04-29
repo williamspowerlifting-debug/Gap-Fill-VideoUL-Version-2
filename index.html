@@ -60,11 +60,155 @@ video, iframe, #player, #builderPlayer{width:100%;height:400px;max-width:100%;di
 .engine-select{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
 .engine-select button{font-size:12px;padding:4px 10px;background:#e5e7eb;color:#374151;}
 .engine-select button.active{background:#4f46e5;color:white;}
+  /* ============ HELP MODAL ============ */
+.help-overlay{
+  display:none;
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.5);z-index:9999;
+  justify-content:center;align-items:center;
+  padding:20px;box-sizing:border-box;
+}
+.help-overlay.show{display:flex;}
+.help-modal{
+  background:white;border-radius:12px;
+  max-width:700px;width:100%;max-height:90vh;
+  overflow-y:auto;padding:24px;position:relative;
+}
+.help-modal h2{margin-top:0;color:#4f46e5;}
+.help-modal h3{color:#1f2937;border-bottom:2px solid #e5e7eb;padding-bottom:6px;margin-top:20px;}
+.help-modal ol, .help-modal ul{padding-left:22px;line-height:1.7;}
+.help-modal li{margin-bottom:6px;}
+.help-modal code{
+  background:#f3f4f6;padding:2px 6px;border-radius:4px;
+  font-size:13px;color:#1f2937;
+}
+.help-modal .tip{
+  background:#fef3c7;border-left:4px solid #f59e0b;
+  padding:10px 14px;margin:10px 0;border-radius:6px;
+}
+.help-modal .danger{
+  background:#fee2e2;border-left:4px solid #dc2626;
+  padding:10px 14px;margin:10px 0;border-radius:6px;
+}
+.help-close{
+  position:sticky;top:0;float:right;
+  background:#ef4444;color:white;border:none;
+  width:32px;height:32px;border-radius:50%;
+  cursor:pointer;font-size:18px;line-height:1;
+}
+.help-fab{
+  position:fixed;bottom:20px;right:20px;
+  background:#4f46e5;color:white;border:none;
+  width:54px;height:54px;border-radius:50%;
+  font-size:22px;cursor:pointer;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+  z-index:9998;
+}
+.help-fab:hover{background:#10b981;}
+/* ============ END HELP ============ */
 </style>
 </head>
 
 <body>
 <div class="container" id="app"></div>
+  <button class="help-fab" onclick="document.getElementById('helpOverlay').classList.add('show')" title="Help">❓</button>
+
+<div class="help-overlay" id="helpOverlay" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="help-modal">
+    <button class="help-close" onclick="document.getElementById('helpOverlay').classList.remove('show')">×</button>
+
+    <h2>📖 How to Use the Listening Exercise Builder</h2>
+    <p>Create gap-fill listening exercises from any video and share them with your students with a single link.</p>
+
+    <h3>🎬 Step 1 — Add Your Video</h3>
+    <p>Choose one of the three options at the top:</p>
+    <ul>
+      <li><b>🔗 Video Link</b> — Paste a YouTube URL or direct .mp4 link.</li>
+      <li><b>📁 Local File</b> — Pick a video from your computer (preview only — students won't see it).</li>
+      <li><b>☁️ Cloud Upload</b> — Upload your video to be hosted automatically. <b>Use this if you want to share with students.</b> Supports .mp4, .mov, .avi, .mkv, .webm.</li>
+    </ul>
+    <div class="tip">💡 <b>Tip:</b> Cloud Upload takes 1–3 minutes to convert. You'll see a green ✅ when ready.</div>
+
+    <h3>📝 Step 2 — Generate a Transcript (Optional)</h3>
+    <p>This helps you find the exact times for sections without scrubbing through the video.</p>
+    <ol>
+      <li>Pick a transcript engine (🤖 Auto picks the best for you).</li>
+      <li>Click <b>✨ Generate Transcript</b>.</li>
+      <li>Wait for the transcript to appear with timestamps.</li>
+      <li>Click any timestamp to jump the video to that point.</li>
+    </ol>
+
+    <h3>✏️ Step 3 — Build Sections</h3>
+    <p>Each section is one play-and-fill task for your students.</p>
+    <ol>
+      <li>Click <b>+ Add Section</b>.</li>
+      <li>Type the sentence(s) in the text box. Use <code>_</code> (underscore) to mark each gap.<br>
+        Example: <code>Today the weather is _ and a bit _.</code></li>
+      <li>Type the answers, comma-separated. Example: <code>sunny,cold</code></li>
+      <li>Set the start/end times for the audio segment:
+        <ul>
+          <li>From the video — pause and click <b>Set Start</b> / <b>Set End</b></li>
+          <li>From the transcript — click <b>→ Start</b> or <b>→ End</b> on any line</li>
+        </ul>
+      </li>
+    </ol>
+    <div class="tip">💡 The number of <code>_</code> gaps must match the number of answers — a warning shows if they don't.</div>
+
+    <h3>👀 Step 4 — Preview & Test</h3>
+    <ul>
+      <li><b>Preview</b> — See the student view before sharing.</li>
+      <li><b>✨ Toggle Gap Highlight</b> — Highlights gaps in your text for visual checking.</li>
+      <li>From preview, click <b>Play Section 1, 2…</b> to test the timing.</li>
+    </ul>
+
+    <h3>🔗 Step 5 — Share with Students</h3>
+    <ol>
+      <li>Click <b>Generate Link</b>.</li>
+      <li>Copy the link that appears.</li>
+      <li>Send it to students via email, chat, or LMS.</li>
+      <li>Students open the link and complete the exercise — no signup needed.</li>
+    </ol>
+    <div class="danger">⚠️ <b>Important:</b> "Generate Link" only works with YouTube, MP4 links, or Cloud Upload. Local Files cannot be shared.</div>
+
+    <h3>💾 Saving & Reopening Exercises</h3>
+    <ul>
+      <li><b>💾 Save Exercise</b> — Downloads a <code>.json</code> file you can keep on your computer.</li>
+      <li><b>📂 Load Exercise</b> — Reopen a saved <code>.json</code> file later to edit it.</li>
+    </ul>
+
+    <h3>🧑‍🎓 What Students See</h3>
+    <ol>
+      <li>The video appears at the top.</li>
+      <li>They click <b>Play Section 1</b>, <b>Play Section 2</b>, etc.</li>
+      <li>They type answers in the gaps.</li>
+      <li>They click <b>Check Answers</b> — green = correct, red = wrong.</li>
+      <li>After checking, they can click <b>Reveal Answers</b> to see the right ones.</li>
+      <li><b>Repeat Section</b> replays the current segment.</li>
+    </ol>
+
+    <h3>🎙️ Transcript Engine Comparison</h3>
+    <ul>
+      <li><b>🐰 Bunny Captions</b> — Best for Cloud Upload videos. Auto-generated, very accurate.</li>
+      <li><b>🎯 AssemblyAI</b> — Best for YouTube/MP4 links. ~95% accuracy.</li>
+      <li><b>🌐 Browser Speech</b> — Free fallback. Less accurate. Records via microphone while you play the video aloud.</li>
+    </ul>
+
+    <h3>📱 Mobile Support</h3>
+    <p>The app works on phones and tablets. Students can complete exercises from any device with a browser.</p>
+
+    <h3>❓ Troubleshooting</h3>
+    <ul>
+      <li><b>Video won't play after upload</b> — Wait 1–3 minutes for Cloud processing, then refresh.</li>
+      <li><b>".mov won't play locally"</b> — Use Cloud Upload instead.</li>
+      <li><b>Transcript is empty</b> — Try a different engine or wait longer for Bunny captions.</li>
+      <li><b>Generated link is too long</b> — Keep section text short, or use a link shortener.</li>
+    </ul>
+
+    <p style="text-align:center;margin-top:24px;color:#6b7280;font-size:13px;">
+      Built with ❤️ for ESL teachers everywhere
+    </p>
+  </div>
+</div>
 
 <script>
 const app=document.getElementById("app");
